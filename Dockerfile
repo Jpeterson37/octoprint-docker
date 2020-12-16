@@ -73,6 +73,8 @@ RUN make install
 COPY root /
 ENV CAMERA_DEV /dev/video0
 ENV MJPG_STREAMER_INPUT -y -n -r 640x480
+ENV CAMERA_DEV2 /dev/video1
+ENV MJPG_STREAMER_INPUT2 -y -n -r 640x480
 ENV PIP_USER true
 ENV PYTHONUSERBASE /octoprint/plugins
 ENV PATH "${PYTHONUSERBASE}/bin:${PATH}"
