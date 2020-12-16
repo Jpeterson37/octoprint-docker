@@ -13,3 +13,18 @@ fi
 exec mjpg_streamer \
   -i "/usr/local/lib/mjpg-streamer/$MJPG_STREAMER_INPUT -d $CAMERA_DEV" \
   -o "/usr/local/lib/mjpg-streamer/output_http.so -w /usr/local/share/mjpg-streamer/www -p 8080"
+
+
+if [ -n "$MJPEG_STREAMER_INPUT2" ]; then
+  echo "Deprecation warning: the environment variable '\$MJPEG_STREAMER_INPUT' was renamed to '\$MJPG_STREAMER_INPUT2'"
+
+  MJPG_STREAMER_INPUT2=$MJPEG_STREAMER_INPUT2
+fi
+
+if ! expr "$MJPG_STREAMER_INPUT2" : ".*\.so.*" > /dev/null; then
+  MJPG_STREAMER_INPUT="input_uvc.so $MJPG_STREAMER_INPUT2"
+fi
+
+exec mjpg_streamer \
+  -i "/usr/local/lib/mjpg-streamer/$MJPG_STREAMER_INPUT2 -d $CAMERA_DEV2" \
+  -o "/usr/local/lib/mjpg-streamer/output_http.so -w /usr/local/share/mjpg-streamer/www -p 8081"
