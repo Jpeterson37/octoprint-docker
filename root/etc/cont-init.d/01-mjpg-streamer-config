@@ -3,6 +3,6 @@
 : "${ENABLE_MJPG_STREAMER:=false}"
 
 # disable mjpg-streamer service if not enabled
-if ! $ENABLE_MJPG_STREAMER; then
+if ! $ENABLE_MJPG_STREAMER or ! $ENABLE_MJPG_STREAMER2; then
   rm -rf /etc/services.d/mjpg-streamer
 fi
