@@ -20,7 +20,7 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
 
 FROM python:${PYTHON_BASE_IMAGE} AS build
 
-ARG octoprint_ref
+ARG octoprint_ref=1.5.2
 ENV octoprint_ref ${octoprint_ref:-master}
 
 RUN apt-get update && apt-get install -y \

@@ -2,26 +2,59 @@ version: '2.4'
 
 services:
   octoprint:
-    image: octoprint/octoprint
+    #image: octoprint/octoprint
+    build: .
     restart: unless-stopped
     ports:
       - 80:80
-    # devices:
-    #  - /dev/ttyACM0:/dev/ttyACM0
-    #  - /dev/video0:/dev/video0
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+      - /dev/zcam:/dev/video0
+      - /dev/scam:/dev/video1
     volumes:
-     - octoprint:/octoprint
+      - octoprint:/octoprint
     # uncomment the lines below to ensure camera streaming is enabled when
     # you add a video device
-    #environment:
-    #  - ENABLE_MJPG_STREAMER=true
+    environment:
+      - ENABLE_MJPG_STREAMER=true
+      - ENABLE_MJPG_STREAMER2=true
+      - MJPG_STREAMER_INPUT="-y -n -r 1280x720"
+      - MJPG_STREAMER_INPUT2="-y -n -r 1280x720"
+      - CAMERA_DEV=/dev/video0
+      - CAMERA_DEV2=/dev/video1
+  
+  # streamer1:
+  #   build: .
+  #   ports:
+  #     - 8001:8080
+  #   devices:
+  #     - /dev/scam:/dev/video0
+  #   environment:
+  #     - MJPG_RES=1280x720
+  #     - MJPG_FPS=25
+  #     - MJPG_USER=guest
+  #     - MJPG_PASS=guest
+  #   restart: always
+
+ # streamer2:
+ #   build: .
+ #   ports:
+ #     - 8002:8080
+ #   devices:
+ #     - /dev/video1:/dev/video0
+ #   environment:
+ #     - MJPG_RES=640x480
+ #     - MJPG_FPS=25
+ #     - MJPG_USER=admin
+ #     - MJPG_PASS=adm1n
+ #   restart: always
   
   ####
   # uncomment if you wish to edit the configuration files of octoprint
   # refer to docs on configuration editing for more information
   ####
 
-  #config-editor:
+  # config-editor:
   #  image: linuxserver/code-server
   #  ports:
   #    - 8443:8443
